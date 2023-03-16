@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"os"
 )
 
 var (
@@ -10,7 +11,10 @@ var (
 )
 
 func Connect() {
-	d, err := gorm.Open("mysql", "ntekim:jothamntekim@gmail.com/bookstore?charset=utf8&parseTime=True&loc=Local")
+	//Add .env file and setup MYSQL environment variables 	
+	dataSourceName := fmt.Sprintf("%s:%s@tcp(localhost:3306)/altschool", os.Getenv("MYSQL_USERNAME"), os.Getenv("MYSQL_PASSWORD"))
+	
+	d, err := gorm.Open("mysql", dataSourceName)
 	if err != nil {
 		panic(err)
 	}
